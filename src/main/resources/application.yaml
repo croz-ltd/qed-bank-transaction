@@ -1,2 +1,7 @@
 server:
   port: 9666
+
+opentracing:
+  jaeger:
+    http-sender:
+      url: http://localhost:16686/api/traces
