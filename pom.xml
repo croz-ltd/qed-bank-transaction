@@ -14,6 +14,28 @@
     <artifactId>qed-bank-transaction</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <name>CROZ QED Bank - Transaction</name>
+
+    <developers>
+        <developer>
+            <name>Denis Jajčević</name>
+            <email>djajcevic@croz.net</email>
+            <organization>CROZ d.o.o.</organization>
+            <organizationUrl>www.croz.net</organizationUrl>
+        </developer>
+        <developer>
+            <name>Milan Jovanović</name>
+            <email>mjovanovic@croz.net</email>
+            <organization>CROZ d.o.o.</organization>
+            <organizationUrl>www.croz.net</organizationUrl>
+        </developer>
+    </developers>
+
+    <properties>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.language>java</sonar.language>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -36,9 +58,15 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
+
         <!-- Jaeger -->
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
@@ -50,6 +78,13 @@
             <artifactId>jaeger-core</artifactId>
             <version>0.35.3</version>
         </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -59,15 +94,33 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**/net/croz/qed/bank/**/QedBank**Application</exclude>
+                        <exclude>**/net/croz/qed/bank/**/model/**</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>1.2.0</version>
                 <configuration>
-                  <to>
-                    <image>registry.dmz.croz.net/qed2019/qed-bank-transaction</image>
-                  </to>
+                    <to>
+                        <image>registry.dmz.croz.net/qed2019/qed-bank-transaction</image>
+                    </to>
                 </configuration>
-              </plugin>
+            </plugin>
         </plugins>
     </build>
 </project>

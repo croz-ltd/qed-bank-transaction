@@ -34,11 +34,14 @@ public class TransactionController {
             return performModifyBalance(modifyBalanceRequest);
         }
         // Account not found, respond back to user
-        return new ResponseEntity<>(Response.fail("Balance for account with IBAN: '" + modifyBalanceRequest.getIban() + "' currently not available."), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Response
+            .fail("Balance for account with IBAN: '" + modifyBalanceRequest.getIban() + "' currently not available."),
+            HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/transaction/withdraw")
-    public ResponseEntity<Response<String>> withdrawMoney(@RequestBody final ModifyBalanceRequest modifyBalanceRequest) {
+    public ResponseEntity<Response<String>> withdrawMoney(
+        @RequestBody final ModifyBalanceRequest modifyBalanceRequest) {
         // Check if account exists
         final Optional<Balance> balanceByIban = balanceService.getByIban(modifyBalanceRequest.getIban());
         if (balanceByIban.isPresent()) {
@@ -50,14 +53,19 @@ public class TransactionController {
                 return performModifyBalance(modifyBalanceRequest);
             } else {
                 // Account exists but user dont have enough balance to do this withdrawal
-                return new ResponseEntity<>(Response.fail("Balance for account with IBAN: '" + modifyBalanceRequest.getIban() + "' has insufficient balance for this transaction."), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(Response.fail(
+                    "Balance for account with IBAN: '" + modifyBalanceRequest.getIban()
+                        + "' has insufficient balance for this transaction."), HttpStatus.NOT_FOUND);
             }
         }
         // Account not found, respond back to user
-        return new ResponseEntity<>(Response.fail("Balance for account with IBAN: '" + modifyBalanceRequest.getIban() + "' currently not available."), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(Response
+            .fail("Balance for account with IBAN: '" + modifyBalanceRequest.getIban() + "' currently not available."),
+            HttpStatus.NOT_FOUND);
     }
 
-    private ResponseEntity<Response<String>> performModifyBalance(@RequestBody ModifyBalanceRequest modifyBalanceRequest) {
+    private ResponseEntity<Response<String>> performModifyBalance(
+        @RequestBody ModifyBalanceRequest modifyBalanceRequest) {
         final AddFund addFund = new AddFund(modifyBalanceRequest.getIban(), modifyBalanceRequest.getAmount());
         // Perform fund addition
         final Optional<Boolean> success = balanceService.addFund(addFund);
@@ -73,4 +81,5 @@ public class TransactionController {
         // We did not get response from balance service
         throw new BalanceServiceNotAvailableException();
     }
+
 }

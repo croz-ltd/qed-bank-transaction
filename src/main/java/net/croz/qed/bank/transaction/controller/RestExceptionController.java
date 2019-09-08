@@ -14,4 +14,5 @@ public class RestExceptionController {
     public ResponseEntity<Response<Void>> handleBalanceServiceNotAvailableException(final BalanceServiceNotAvailableException ex) {
         return new ResponseEntity<>(Response.fail("It is not possible to carry out transaction right now. Please try again later."), HttpStatus.FAILED_DEPENDENCY);
     }
+
 }

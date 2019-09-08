@@ -5,3 +5,10 @@ opentracing:
   jaeger:
     http-sender:
       url: ${JAEGER_URL:http://localhost:16686/api/traces}
+
+spring:
+  application:
+    name: qed-bank-transaction
+
+service-url:
+  balance: ${SERVICE_URL_BALANCE:http://localhost:8666}
