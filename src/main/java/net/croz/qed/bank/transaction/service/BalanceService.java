@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface BalanceService {
 
-    Optional<Balance> getByIban(final String iban);
+    Optional<Balance> getByIban(String iban);
 
-    Optional<Boolean> addFund(final AddFund addFund);
+    Optional<Boolean> addFund(AddFund addFund);
 
 }

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class AddFund {
 
-    private String     iban;
+    private String iban;
     private BigDecimal fund;
 
     public AddFund() {
@@ -19,7 +19,7 @@ public class AddFund {
         return iban;
     }
 
-    public void setIban(String iban) {
+    public void setIban(final String iban) {
         this.iban = iban;
     }
 
@@ -27,7 +27,7 @@ public class AddFund {
         return fund;
     }
 
-    public void setFund(BigDecimal fund) {
+    public void setFund(final BigDecimal fund) {
         this.fund = fund;
     }
 

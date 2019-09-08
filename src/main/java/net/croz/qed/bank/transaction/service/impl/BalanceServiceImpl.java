@@ -23,8 +23,8 @@ public class BalanceServiceImpl implements BalanceService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BalanceServiceImpl.class);
 
-    private final RestTemplate         restTemplate;
-    private final ServiceUrlProperties serviceUrlProperties;
+    private final transient RestTemplate restTemplate;
+    private final transient ServiceUrlProperties serviceUrlProperties;
 
     @Autowired
     public BalanceServiceImpl(final RestTemplate restTemplate, final ServiceUrlProperties serviceUrlProperties) {
@@ -37,20 +37,17 @@ public class BalanceServiceImpl implements BalanceService {
     public Optional<Balance> getByIban(final String iban) {
         LOGGER.info("Calling balance service to get balance...");
 
-        final ResponseEntity<Optional<Balance>> response = restTemplate.exchange( //
-            serviceUrlProperties.getBalance() + "/balance/iban/" + iban, //
-            HttpMethod.GET, //
-            null, //
-            new ParameterizedTypeReference<Optional<Balance>>() { //
-            } //
-        );
+        final ResponseEntity<Optional<Balance>> response = restTemplate
+            .exchange(serviceUrlProperties.getBalance() + "/balance/iban/" + iban, HttpMethod.GET, null,
+                new ParameterizedTypeReference<Optional<Balance>>() {
+                });
 
         if (response.getStatusCode() == HttpStatus.OK) {
             LOGGER.info("Balance service is alive and responded with OK.");
             return response.getBody();
         }
 
-        LOGGER.info("Balance service is alive but responded with " + response.getStatusCode().name() + ".");
+        LOGGER.info("Balance service is alive but responded with {}.", response.getStatusCode().name());
         return Optional.empty();
     }
 
@@ -59,19 +56,16 @@ public class BalanceServiceImpl implements BalanceService {
     public Optional<Boolean> addFund(final AddFund addFund) {
         LOGGER.info("Calling balance service to add fund...");
 
-        final ResponseEntity<Void> response = restTemplate.postForEntity(
-            serviceUrlProperties.getBalance() + "/balance/modify", //
-            addFund, //
-            Void.class //
-        );
+        final ResponseEntity<Void> response =
+            restTemplate.postForEntity(serviceUrlProperties.getBalance() + "/balance/modify", addFund, Void.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
             LOGGER.info("Balance service is alive and responded with OK.");
-            return Optional.of(true);
+            return Optional.of(Boolean.TRUE);
         }
 
-        LOGGER.info("Balance service is alive but responded with " + response.getStatusCode().name() + ".");
-        return Optional.of(false);
+        LOGGER.info("Balance service is alive but responded with {}.", response.getStatusCode().name());
+        return Optional.of(Boolean.FALSE);
     }
 
     public Optional<Balance> fallbackGetByIban(final String iban) {

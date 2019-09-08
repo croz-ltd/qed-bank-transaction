@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class RestExceptionController {
 
     @ExceptionHandler(BalanceServiceNotAvailableException.class)
-    public ResponseEntity<Response<Void>> handleBalanceServiceNotAvailableException(final BalanceServiceNotAvailableException ex) {
-        return new ResponseEntity<>(Response.fail("It is not possible to carry out transaction right now. Please try again later."), HttpStatus.FAILED_DEPENDENCY);
+    public ResponseEntity<Response<Void>> handleBalanceServiceNotAvailableException(
+        final BalanceServiceNotAvailableException exception) {
+        return new ResponseEntity<>(
+            Response.fail("It is not possible to carry out transaction right now. Please try again later."),
+            HttpStatus.FAILED_DEPENDENCY);
     }
 
 }
